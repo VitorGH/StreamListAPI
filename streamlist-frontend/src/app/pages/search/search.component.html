@@ -1,0 +1,40 @@
+<div class="search-page">
+  <div class="search-header">
+    <h1>Buscar filmes e séries</h1>
+    <div class="search-bar">
+      <input type="text"
+             [(ngModel)]="query"
+             (ngModelChange)="onSearch()"
+             placeholder="Ex: Breaking Bad, Inception..."
+             autofocus />
+      <span class="search-icon">&#9906;</span>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading">Buscando...</div>
+
+  <div class="empty" *ngIf="searched && !loading && results.length === 0">
+    Nenhum resultado encontrado para "<strong>{{ query }}</strong>"
+  </div>
+
+  <div class="results-grid" *ngIf="results.length > 0">
+    <div class="media-card" *ngFor="let item of results">
+      <div class="poster">
+        <img *ngIf="item.poster_path"
+             [src]="posterBase + item.poster_path"
+             [alt]="getTitle(item)" />
+        <div class="no-poster" *ngIf="!item.poster_path">
+          Sem imagem
+        </div>
+        <span class="media-type">{{ item.media_type === 'movie' ? 'Filme' : 'Série' }}</span>
+      </div>
+      <div class="info">
+        <h3>{{ getTitle(item) }}</h3>
+        <p class="year">{{ getYear(item) }}</p>
+        <p class="stars">{{ getStars(item.vote_average) }}</p>
+        <p class="overview">{{ item.overview || 'Sem descrição disponível.' }}</p>
+        <button class="add-btn">+ Adicionar à lista</button>
+      </div>
+    </div>
+  </div>
+</div>
